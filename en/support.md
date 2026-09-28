@@ -6,30 +6,30 @@ If you have questions or run into a problem, please check below.
 ## Frequently Asked Questions
 
 ### Weather is not showing
-In iOS Settings > moDays, make sure Location access is set to "While Using the App".
-Location is used only to fetch the weather of the moment — coordinates are never stored; only the weather and temperature stay with your entry.
+In iOS Settings > Apps > Days, make sure Location access is set to "While Using the App".
+Location is used to fetch the weather of the moment and to note where you were as a place.
 Please also check your internet connection.
 
 ### I can't attach photos
-Check the Photos permission in iOS Settings > moDays.
+Check the Photos permission in iOS Settings > Apps > Days.
 If it is set to "Selected Photos", you can add more photos on the same screen.
 
 ### Recording doesn't work
-Make sure the Microphone permission is enabled in iOS Settings > moDays.
+Make sure the Microphone permission is enabled in iOS Settings > Apps > Days.
 
 ### Calendar events are not showing
-Check the Calendars permission in iOS Settings > moDays.
+Check the Calendars permission in iOS Settings > Apps > Days.
 Calendar events are read only to show that day's schedule while you wrap up your day.
 
 ### Notifications don't arrive
-Check that notifications are allowed in iOS Settings > Notifications > moDays.
+Check that notifications are allowed in iOS Settings > Notifications > Days.
 
 ### The lock won't open
 The lock opens with your device's Face ID or passcode.
-Check the Face ID permission in iOS Settings > moDays.
+Check the Face ID permission in iOS Settings > Apps > Days.
 
 ### iCloud sync isn't working
-Make sure you are signed in at iOS Settings > [your name] > iCloud, and that the moDays toggle is on.
+Make sure you are signed in at iOS Settings > [your name] > iCloud, and that the Days toggle is on.
 Sync runs automatically over Wi-Fi or cellular.
 
 ### How do backups work

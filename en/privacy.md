@@ -11,7 +11,7 @@ The app handles the following information on your device. Everything is stored o
 - **Your entries** — What you write and record (text, colors, sentences, names of places and people) is stored on your device and in iCloud.
 - **Photos** — Only photos you allow and pick yourself are attached to entries. Attached photos are kept in the app's storage and are never sent elsewhere.
 - **Recordings** — The microphone is used only when you attach a recording to an entry. Audio files are stored only on your device and in iCloud.
-- **Location** — Used only to fetch the weather of the moment. Coordinates are never stored. Weather is provided through Apple's WeatherKit service.
+- **Location** — Used to fetch the weather of the moment and to note where an entry was made. A place you choose, or one filled in automatically, is saved with its name and coordinates on your device and in your iCloud; it is never sent to an external server. Weather is provided through Apple's WeatherKit service.
 - **Weather** — The weather and temperature at the time of an entry are saved with that entry.
 - **Calendar** — With your permission, iOS calendar events are read only to show that day's schedule while you wrap up your day. They are never sent elsewhere.
 - **Notifications** — The iOS notification permission is used to deliver notifications; no additional data is collected.
@@ -23,7 +23,7 @@ The app handles the following information on your device. Everything is stored o
 Information handled by the app is used only to provide the app's features.
 
 - Photos, recordings, and entries are used for you to record and revisit your days.
-- Location and calendar information is used for display only.
+- Location is used to fetch the weather and to note places in your entries; calendar information is used for display only.
 - Weather is saved with entries as accompanying metadata.
 
 ## 3. Storage
@@ -31,7 +31,7 @@ Information handled by the app is used only to provide the app's features.
 All data lives in two places:
 
 - Your iOS device (local storage)
-- Apple iCloud (CloudKit container `iCloud.moPlanet.moDays`), governed by Apple's security policies. mo.Today data is read-only, from mo.Today's container (`iCloud.moPlanet.shared`).
+- Apple iCloud — entries sync through the CloudKit container `iCloud.moPlanet.moDays.v2`, and backups you create are saved in iCloud Drive (`iCloud.moPlanet.moDays`), governed by Apple's security policies. mo.Today data is read-only, from mo.Today's container (`iCloud.moPlanet.shared`).
 
 The app operates no external server of its own and never transmits your data to one.
 
