@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>moDays — 하루 한 장, 10년 뒤엔 자서전</title>
+<meta name="description" content="내가 이름 붙인 장소, 내 사람들, 그 순간의 기온까지 — 카드 한 장 뒤에 그날이 통째로 남습니다. iPhone 기록 앱 moDays.">
+<link rel="canonical" href="https://modays.app/">
+<link rel="alternate" hreflang="ko" href="https://modays.app/">
+<link rel="alternate" hreflang="en" href="https://modays.app/en/">
+<link rel="alternate" hreflang="x-default" href="https://modays.app/">
+<link rel="icon" type="image/png" href="/img/icon.png">
+<link rel="apple-touch-icon" href="/img/icon.png">
+<meta name="theme-color" content="#FFFBF7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#23211E" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="moDays">
+<meta property="og:title" content="moDays — 하루 한 장, 10년 뒤엔 자서전">
+<meta property="og:description" content="내가 이름 붙인 장소, 내 사람들, 그 순간의 기온까지 — 카드 한 장 뒤에 그날이 통째로 남습니다. iPhone 기록 앱 moDays.">
+<meta property="og:url" content="https://modays.app/">
+<meta property="og:image" content="https://modays.app/img/og-ko.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="apple-itunes-app" content="app-id=6817686720">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;600;700;800&display=swap">
+<style>
+/* Layout: 앱을 여는 첫 화면(회색 수채 바탕 위 유리 하루 카드)에서 시작해, 크림 지면 위로 기능을 하나씩 — 화면은 폰 틀로, 글은 앱의 서체 위계로.
+   색 값은 앱 토큰(DaysColor) 그대로: 크림 bgApp · 웜 그레이 9단 · 브랜드 로즈 · Color of the Day 다섯. */
+:root {
+  --bg: #FFFBF7;          /* bgApp · neutral0 */
+  --bg-alt: #FAF5EF;      /* neutral50 */
+  --surface: #FFFFFF;     /* bgSurface */
+  --subtle: #F2EBE3;      /* neutral100 */
+  --line: #E6DCD2;        /* neutral200 */
+  --fg1: #1C1814;         /* neutral900 */
+  --fg2: #3D362F;         /* neutral700 */
+  --fg3: #6E6258;         /* neutral500 */
+  --fg4: #9C8E81;         /* neutral400 */
+  --rose: #E84F7A;        /* brandCore */
+  --rose-deep: #B12B55;   /* brandDeep */
+  --rose-soft: #FFE0EA;   /* brandSoft */
+  --veil: rgba(156, 142, 129, .55);   /* 배경 판 모노톤 덮개 — neutral400 × 0.55 */
+  --glass: rgba(255, 255, 255, .55);
+  --glass-line: rgba(255, 255, 255, .6);
+  --night: #1C1814;
+  --night-fg: #F2EBE3;
+  --night-fg2: #A49D96;
+  --shadow: 40, 26, 16;
+  --nav-bg: rgba(28, 24, 20, .94);   /* 메뉴 막대 — 라이트는 먹색(neutral900), 다크는 크림으로 뒤집어 무게를 잡는다 */
+  --nav-fg: #FFFBF7;
+  --nav-fg2: rgba(255, 251, 247, .78);
+  --nav-line: rgba(255, 255, 255, .10);
+  --nav-hover: rgba(255, 255, 255, .10);
+  --mark-a: #E84F7A;      /* 기능 표식 타일 — brandCore → brandDeep */
+  --mark-b: #B12B55;
+  --mark-glow: rgba(177, 43, 85, .55);
+  --c-bluegray: #6782A5;  /* Color of the Day */
+  --c-green: #77B779;
+  --c-orange: #E29E3F;
+  --c-red: #D96668;
+  --c-purple: #AB93D7;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --quote: "Superclarendon", "Rockwell", "Georgia", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #23211E; --bg-alt: #2C2A26; --surface: #393632; --subtle: #34312D; --line: #4B4742;
+    --fg1: #E3DDD7; --fg2: #C7BFB8; --fg3: #A49D96; --fg4: #867F78;
+    --rose: #CC5470; --rose-deep: #E8738C; --rose-soft: #452934;
+    --veil: rgba(23, 22, 20, .65); --glass: rgba(57, 54, 50, .55); --glass-line: rgba(255, 255, 255, .14);
+    --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
+    --mark-a: #D45B78; --mark-b: #9A3451; --mark-glow: rgba(0, 0, 0, .55);
+    --nav-bg: rgba(242, 235, 227, .95); --nav-fg: #1C1814; --nav-fg2: rgba(28, 24, 20, .72); --nav-line: rgba(0, 0, 0, .08); --nav-hover: rgba(0, 0, 0, .06);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #23211E; --bg-alt: #2C2A26; --surface: #393632; --subtle: #34312D; --line: #4B4742;
+  --fg1: #E3DDD7; --fg2: #C7BFB8; --fg3: #A49D96; --fg4: #867F78;
+  --rose: #CC5470; --rose-deep: #E8738C; --rose-soft: #452934;
+  --veil: rgba(23, 22, 20, .65); --glass: rgba(57, 54, 50, .55); --glass-line: rgba(255, 255, 255, .14);
+  --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
+  --mark-a: #D45B78; --mark-b: #9A3451; --mark-glow: rgba(0, 0, 0, .55);
+  --nav-bg: rgba(242, 235, 227, .95); --nav-fg: #1C1814; --nav-fg2: rgba(28, 24, 20, .72); --nav-line: rgba(0, 0, 0, .08); --nav-hover: rgba(0, 0, 0, .06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+.store-badge { display: inline-block; line-height: 0; }
+.store-badge img { height: 54px; width: auto; }
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--fg2);
+  font-family: var(--sans); font-size: 17px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word;
+}
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+h1, h2, h3, p, figure, ol, ul, blockquote { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; border-radius: 6px; }
+
+.wrap {
+  max-width: 1200px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ── 앱 바탕 띠: 배경 판 처리(흑백 + 웜 그레이 덮개)를 웹에 그대로 */
+.backdrop { position: relative; isolation: isolate; overflow: hidden; color: var(--fg1); }
+.backdrop::before {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background: url("/img/bg-wide.jpg") center / cover no-repeat;
+  filter: grayscale(1) brightness(1.045);
+}
+.backdrop::after { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--veil); }
+
+/* ── 메뉴 막대 — 짙은 먹색 알약이 화면 위에서 무게를 잡는다 */
+.nav {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 50;
+  height: 68px; margin-bottom: -68px;
+}
+.nav-in {
+  display: flex; align-items: center; gap: 10px;
+  max-width: 1120px; height: 64px; margin-inline: auto;
+  padding: 0 10px 0 12px;
+  background: var(--nav-bg); color: var(--nav-fg);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid var(--nav-line); border-radius: 999px;
+  box-shadow: 0 16px 36px -16px rgba(var(--shadow), .55);
+}
+.nav-wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg1); font-weight: 600; font-size: 18px; letter-spacing: -.01em; }
+.nav .brand { gap: 12px; color: var(--nav-fg); font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
+.nav .brand img { width: 42px; height: 42px; border-radius: 11px; }
+.nav-links { display: flex; gap: 4px; margin-left: auto; }
+.nav-links a { text-decoration: none; font-size: 16px; font-weight: 600; color: var(--nav-fg2); padding: 10px 14px; border-radius: 999px; transition: background .2s ease, color .2s ease; }
+.nav-links a:hover { background: var(--nav-hover); color: var(--nav-fg); }
+.nav-cta {
+  text-decoration: none; font-size: 16px; font-weight: 700; color: #fff; background: var(--rose);
+  padding: 12px 22px; border-radius: 999px; box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+}
+.nav-cta:hover { background: var(--rose-deep); }
+@media (max-width: 560px) {
+  .nav-links a.opt { display: none; }
+  .nav .brand { font-size: 19px; }
+  .nav .brand img { width: 38px; height: 38px; }
+  .nav-cta { padding: 11px 18px; }
+}
+
+/* ── 히어로 */
+.hero .wrap {
+  display: grid; gap: 48px; align-items: center;
+  padding-block: 132px 72px;
+}
+@media (min-width: 980px) { .hero .wrap { grid-template-columns: minmax(0, 1fr) minmax(0, 540px); gap: 72px; padding-block: 160px 96px; } }
+.eyebrow { font-size: 14px; font-weight: 600; color: var(--rose-deep); letter-spacing: .01em; }
+.hero .eyebrow { color: var(--fg2); }
+.hero h1 {
+  margin-top: 18px;
+  font-size: clamp(40px, 6.4vw, 84px); line-height: 1.1; letter-spacing: -.04em; color: var(--fg1);
+  text-wrap: balance;
+}
+.hero h1 .thin { display: block; font-weight: 200; }
+.hero h1 .heavy { display: block; font-weight: 800; }
+.hero .lede { margin-top: 26px; max-width: 30em; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.7; color: var(--fg2); }
+.get { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; }
+.store {
+  display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
+  background: #000; color: #fff; border-radius: 14px; padding: 10px 20px 10px 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+}
+.store svg { width: 26px; height: 26px; flex: none; }
+.store small { display: block; font-size: 11px; line-height: 1.2; opacity: .8; }
+.store b { display: block; font-size: 19px; line-height: 1.2; font-weight: 600; letter-spacing: -.01em; }
+.meta { font-size: 14px; color: var(--fg3); }
+.hero .meta { color: var(--fg2); }
+
+/* 히어로 데모 — 주간 바 + 하루 카드 + 오늘의 색 */
+.demo { display: grid; gap: 14px; width: 100%; max-width: 540px; justify-self: center; }
+.weekbar {
+  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 10px 6px 8px; border-radius: 22px;
+  background: var(--glass); border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
+  text-align: center; color: var(--fg2);
+}
+.weekbar span { display: block; }
+.wd-l { font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--fg3); }
+.wd-n {
+  position: relative; isolation: isolate; margin: 2px auto 0; width: 40px; height: 34px;
+  font-size: 22px; line-height: 34px; font-variant-numeric: tabular-nums;
+}
+.wd-n::before {
+  content: ""; position: absolute; inset: -6px; z-index: -1; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--g, transparent) 55%, transparent), transparent);
+  transition: background .9s ease;
+}
+.wd-n.today { font-weight: 700; color: var(--fg1); }
+.wd-n.today::after { content: ""; position: absolute; left: 25%; right: 25%; bottom: 1px; height: 2px; background: var(--fg1); border-radius: 2px; }
+.wd-dot { width: 4px; height: 4px; margin: 3px auto 0; border-radius: 50%; background: var(--fg3); }
+.wd-dot.none { visibility: hidden; }
+
+.swatches { display: flex; align-items: center; gap: 12px; padding-inline: 6px; }
+.swatches-label { font-size: 14px; font-weight: 500; color: var(--fg2); margin-right: auto; }
+.swatch {
+  width: 30px; height: 30px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+  background: var(--sw); box-shadow: 0 0 0 0 transparent, inset 0 0 0 1px rgba(255,255,255,.35);
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+.swatch:hover { transform: scale(1.08); }
+.swatch[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--fg1); }
+
+/* ── 하루 카드 — HeroSection 값(카드 424×280pt 기준)을 카드 폭 비율(cqw)로 옮김 */
+.daycard {
+  container-type: inline-size; position: relative; width: 100%;
+  aspect-ratio: 424 / 280; border-radius: 5.66% / 8.57%;
+}
+.daycard .face {
+  position: absolute; inset: 0; border-radius: inherit; overflow: hidden; isolation: isolate;
+  background: rgba(255, 255, 255, .10);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .42), inset 0 1.5px 0 rgba(255, 255, 255, .6), 0 18px 40px -22px rgba(var(--shadow), .5);
+  -webkit-backdrop-filter: blur(8px) saturate(1.4); backdrop-filter: blur(8px) saturate(1.4);
+}
+.daycard .photo {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 35%);
+  filter: grayscale(1) contrast(.5) brightness(1.28);
+  -webkit-mask-image: linear-gradient(to right, transparent 1.2%, #000 6.5%, #000 93.5%, transparent 98.8%), linear-gradient(to bottom, transparent 1.8%, #000 9.5%, #000 90.5%, transparent 98.2%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 1.2%, #000 6.5%, #000 93.5%, transparent 98.8%), linear-gradient(to bottom, transparent 1.8%, #000 9.5%, #000 90.5%, transparent 98.2%);
+  mask-composite: intersect;
+}
+.daycard .tint {
+  position: absolute; inset: 1.18cqw; border-radius: 4.5cqw; filter: blur(.7cqw);
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--c) 50%, transparent) 0%,
+    color-mix(in srgb, var(--c) 30%, transparent) 50%,
+    color-mix(in srgb, var(--c) 10%, transparent) 100%);
+  mix-blend-mode: color; opacity: 0; transition: opacity 1s ease;
+}
+.daycard .tint.on { opacity: 1; }
+.daycard .tint.gray {
+  inset: 3.07cqw; filter: blur(2.36cqw); mix-blend-mode: multiply;
+  background: linear-gradient(to bottom, rgba(140,140,140,.25), rgba(140,140,140,.11) 50%, rgba(140,140,140,.012));
+}
+.daycard .content {
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between;
+  padding: 1.89cqw 4.72cqw 4.72cqw; color: #fff;
+  text-shadow: 0 .47cqw .71cqw rgba(0, 0, 0, .4);
+}
+.dc-top { display: flex; align-items: flex-start; }
+.dc-num { font-size: 22.64cqw; font-weight: 100; line-height: 1.05; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.dc-wd { margin-left: 1.89cqw; padding-top: 4.4cqw; font-size: 5.19cqw; font-weight: 500; color: rgba(255,255,255,.85); }
+.dc-rel { margin-left: auto; padding-top: 3.3cqw; font-size: 9.43cqw; font-weight: 300; color: rgba(255,255,255,.85); white-space: nowrap; }
+.dc-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqw; }
+.dc-wx { display: flex; align-items: center; gap: .94cqw; font-size: 5.19cqw; color: rgba(255,255,255,.85); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dc-wx svg { width: 1.05em; height: 1.05em; flex: none; }
+.dc-q { display: flex; flex-direction: column; align-items: flex-end; gap: .94cqw; max-width: 66cqw; text-align: right; }
+.dc-q .g { font-family: var(--quote); font-size: 14.15cqw; line-height: 1; height: 7cqw; color: rgba(255,255,255,.55); }
+.dc-q p { font-size: 5.66cqw; line-height: 1.32; color: rgba(255,255,255,.88); text-shadow: 0 0 2.36cqw rgba(0,0,0,.3); }
+.dc-q cite { font-style: normal; font-size: 3.77cqw; font-weight: 700; color: rgba(255,255,255,.68); }
+.dc-q.m .g { font-size: 11.8cqw; height: 5.9cqw; }
+.dc-q.m p { font-size: 4.72cqw; }
+.dc-q.m cite { font-size: 3.3cqw; }
+
+/* ── 하루 카드 흐름(F1) */
+.days { padding-block: 24px 120px; }
+.days-head { display: grid; gap: 18px; max-width: 760px; }
+.days h2, .feature h2 {
+  font-size: clamp(30px, 4.2vw, 50px); line-height: 1.22; letter-spacing: -.035em; font-weight: 700; color: var(--fg1);
+  text-wrap: balance;
+}
+.intro { max-width: 34em; font-size: clamp(17px, 1.5vw, 19px); line-height: 1.75; color: var(--fg2); }
+.marquee {
+  margin-top: 56px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+.track { display: flex; gap: 22px; width: max-content; padding-block: 8px 30px; animation: drift 80s linear infinite; }
+.track .daycard { width: clamp(270px, 30vw, 380px); flex: none; }
+.marquee:hover .track { animation-play-state: paused; }
+@keyframes drift { to { transform: translateX(calc(-50% - 11px)); } }
+.trio-points { margin-top: 24px; display: grid; gap: 28px; }
+@media (min-width: 820px) { .trio-points { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } }
+.days .point p { color: var(--fg2); }
+
+/* ── 기능 표식 — 아이콘 타일 + 이름 */
+.mark { display: flex; align-items: center; gap: 14px; }
+.mark-ico {
+  flex: none; width: 58px; height: 58px; border-radius: 17px; display: grid; place-items: center;
+  color: #fff; background: linear-gradient(150deg, var(--mark-a), var(--mark-b));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35), inset 0 0 0 1px rgba(255,255,255,.1), 0 12px 24px -12px var(--mark-glow);
+}
+.mark-ico svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.mark-name { font-size: 19px; font-weight: 700; letter-spacing: -.015em; color: var(--fg1); }
+.night .mark-name { color: var(--night-fg); }
+@media (max-width: 560px) {
+  .mark-ico { width: 50px; height: 50px; border-radius: 15px; }
+  .mark-ico svg { width: 26px; height: 26px; }
+  .mark-name { font-size: 17px; }
+}
+
+/* ── 기능 섹션 공통 */
+.feature { padding-block: clamp(84px, 11vw, 150px); }
+.feature.alt { background: var(--bg-alt); }
+.split { display: grid; gap: 56px; align-items: center; }
+.split > * { min-width: 0; }
+@media (min-width: 900px) {
+  .split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; }
+  .split.flip .media { order: -1; }
+}
+.copy { display: grid; gap: 20px; max-width: 34rem; }
+.points { display: grid; gap: 22px; margin-top: 14px; }
+.point h3 { font-size: 17px; font-weight: 600; line-height: 1.45; color: var(--fg1); letter-spacing: -.01em; }
+.point p { margin-top: 4px; font-size: 16px; line-height: 1.7; color: var(--fg3); }
+
+/* 폰 — 애플 공식 기기 틀(iPhone 18 Pro Max · Silver와 Burgundy를 섞어)에 촬영본을 끼운 합성본. 틀은 손대지 않고 그대로(그림자·기울임·겹침·움직임 없음 — 애플 마케팅 가이드라인).
+   기기 바깥을 투명하게 하는 윤곽 마스크는 틀의 모양에서 따낸 것이다. */
+.phone { width: var(--w, clamp(220px, 24vw, 300px)); max-width: 100%; }
+.phone img {
+  width: 100%; height: auto; aspect-ratio: 720 / 1469;
+  -webkit-mask-image: url("data:image/png;base64,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"); mask-image: url("data:image/png;base64,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");
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.phone.b img { -webkit-mask-image: url("data:image/png;base64,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AQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIERgqc5s4X0DkdxwgQINBW4FyuvIDO6ThGgACBtgLZDM4ebDsv1QkQILB6gZOcgIDO6ThGgACBtgICuq2v6gQIECgWENDFdDoSIEBgRgGPOGbENzQBAgRyAgI6p+MYAQIEZhQQ0DPiG5oAAQI5AQGd03GMAAECMwoI6BnxDU2AAIGcgIDO6ThGgACBtgI+i6Otr+oECBBoI+AOuo2rqgQIEDhYQEAfTKgAAQIE2ggI6DauqhIgQOBg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"); mask-image: url("data:image/png;base64,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AQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIEagoI6JqaahEgQKCigICuiKkUAQIERgqc5s4X0DkdxwgQINBW4FyuvIDO6ThGgACBtgLZDM4ebDsv1QkQILB6gZOcgIDO6ThGgACBtgICuq2v6gQIECgWENDFdDoSIEBgRgGPOGbENzQBAgRyAgI6p+MYAQIEZhQQ0DPiG5oAAQI5AQGd03GMAAECMwoI6BnxDU2AAIGcgIDO6ThGgACBtgI+i6Otr+oECBBoI+AOuo2rqgQIEDhYQEAfTKgAAQIE2ggI6DauqhIgQOBg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"); }  /* 버건디 틀의 윤곽 */
+.media { display: flex; justify-content: center; }
+.duo { display: flex; justify-content: center; align-items: flex-start; gap: clamp(14px, 2.4vw, 28px); }
+.duo .phone { --w: clamp(150px, 20vw, 260px); }
+.duo .phone + .phone { margin-top: 12%; }
+
+/* F2 — 기록 하나 뒤에 남는 것 */
+.facts { margin-top: 14px; border-top: 1px solid var(--line); }
+.facts li { display: grid; grid-template-columns: 5.5em minmax(0, 1fr); gap: 16px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.facts .k { font-size: 14px; font-weight: 600; color: var(--fg4); padding-top: 2px; }
+.facts .v b { display: block; font-size: 17px; font-weight: 600; color: var(--fg1); }
+.facts .v span { display: block; margin-top: 2px; font-size: 16px; line-height: 1.7; color: var(--fg3); }
+
+/* F4 — 세 걸음 */
+.steps-head { display: grid; gap: 18px; max-width: 760px; }
+.steps {
+  margin-top: 64px; display: grid; grid-auto-flow: column; grid-auto-columns: 64%; gap: 20px;
+  overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none;
+}
+.steps::-webkit-scrollbar { display: none; }
+.steps li { scroll-snap-align: start; display: grid; gap: 22px; align-content: start; }
+.steps .phone { --w: 100%; }
+@media (min-width: 760px) {
+  .steps { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 4vw, 56px); overflow: visible; }
+  .steps li:nth-child(2) { margin-top: 48px; }
+  .steps li:nth-child(3) { margin-top: 96px; }
+}
+.note { margin-top: 56px; max-width: 40em; font-size: 16px; color: var(--fg3); }
+.note b { color: var(--fg1); font-weight: 600; }
+
+/* F5 — 단마다 두 장이 맞서고, 이긴 한 장이 올라간다 */
+.bracket-box { container-type: inline-size; }
+.bracket {
+  /* 사진 한 변 — 칸 폭에 맞춰 40~72px(다섯 단 + 화살표 넷이 칸 안에 들도록) */
+  --T: clamp(40px, calc((100cqw - 64px) / 5.5), 72px); --F: calc(var(--T) * 1.5);
+  margin-top: 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 4px;
+}
+.bracket li { display: grid; justify-items: center; gap: 10px; }
+.bracket .pair { display: grid; gap: 8px; }
+.bracket .t { position: relative; display: block; width: var(--T); aspect-ratio: 1; border-radius: 24%; }
+.bracket .t img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; filter: grayscale(1); opacity: .38; }
+.bracket .t.win img { filter: none; opacity: 1; }
+.bracket .t.win { box-shadow: 0 0 0 2px var(--bg-alt), 0 0 0 4px var(--rose), 0 10px 20px -10px rgba(var(--shadow), .6); }
+.bracket .final .t { width: var(--F); }
+.bracket .star {
+  position: absolute; top: -9px; right: -9px; width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--rose); color: #fff;
+  box-shadow: 0 0 0 2px var(--bg-alt);
+}
+.bracket .star svg { width: 13px; height: 13px; }
+.bracket .lv { font-size: 13px; line-height: 17px; color: var(--fg3); white-space: nowrap; }
+.bracket .final .lv { color: var(--rose-deep); font-weight: 600; }
+.bracket .chev {
+  align-self: flex-end; flex: none; width: 8px; height: 8px;
+  margin-bottom: calc(17px + 10px + var(--T) + 4px - 4px);
+  border-top: 1.8px solid var(--fg4); border-right: 1.8px solid var(--fg4); transform: rotate(45deg);
+}
+.ladder-cap { margin-top: 16px; font-size: 15px; color: var(--fg3); }
+
+/* F6 — 조건 알약 */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.chips span {
+  font-size: 15px; font-weight: 500; color: var(--fg2); padding: 7px 14px; border-radius: 999px;
+  background: var(--surface); box-shadow: inset 0 0 0 1px var(--line);
+}
+.chips span.on { background: var(--fg1); color: var(--bg); box-shadow: none; }
+
+/* F7 — 비밀로 두기 (밤 띠) */
+.night { background: var(--night); color: var(--night-fg); padding-block: clamp(96px, 13vw, 170px); }
+.night .wrap { display: grid; gap: 40px; }
+.night-top { display: grid; gap: 40px; }
+.night-top > * { min-width: 0; }
+.night-copy { display: grid; gap: 36px; }
+@media (min-width: 900px) { .night-top { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 72px; } }
+.night .eyebrow { color: #E8738C; }
+.lock { width: clamp(110px, 16vw, 210px); height: auto; color: var(--night-fg); justify-self: center; }
+.night h2 { font-size: clamp(30px, 4.4vw, 54px); line-height: 1.2; letter-spacing: -.035em; font-weight: 700; color: var(--night-fg); text-wrap: balance; max-width: 15em; }
+.night .intro { color: var(--night-fg2); }
+.night blockquote { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.5; font-weight: 300; letter-spacing: -.02em; color: var(--night-fg); padding-left: 22px; border-left: 2px solid #E8738C; }
+.night-points { display: grid; gap: 30px; margin-top: 8px; }
+@media (min-width: 760px) { .night-points { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 56px; max-width: 980px; } }
+.night .point h3 { color: var(--night-fg); }
+.night .point p { color: var(--night-fg2); }
+
+/* F9 — 하루에서 인생까지 */
+.shelf-head { display: grid; gap: 18px; max-width: 760px; }
+.shelf {
+  margin-top: 64px; display: grid; grid-auto-flow: column; grid-auto-columns: 58%; gap: 20px;
+  overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none;
+}
+.shelf::-webkit-scrollbar { display: none; }
+.shelf li { scroll-snap-align: start; display: grid; gap: 18px; justify-items: start; }
+.shelf .phone { --w: 100%; }
+.shelf .lv { display: flex; align-items: baseline; gap: 10px; }
+.shelf .lv b { font-size: 22px; font-weight: 700; color: var(--fg1); letter-spacing: -.02em; }
+.shelf .lv span { font-size: 14px; color: var(--fg3); }
+@media (min-width: 900px) { .shelf { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; overflow: visible; } }
+.shelf-points { margin-top: 64px; display: grid; gap: 28px; }
+@media (min-width: 820px) { .shelf-points { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } }
+
+/* 그리고 — 세 칸 */
+.more { padding-block: 24px clamp(96px, 12vw, 150px); }
+.more h2 { font-size: clamp(24px, 2.6vw, 30px); font-weight: 700; letter-spacing: -.03em; color: var(--fg1); }
+.tiles { margin-top: 28px; display: grid; gap: 16px; }
+@media (min-width: 760px) { .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.tile { display: grid; gap: 10px; align-content: start; padding: 28px; border-radius: 24px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.tile svg { width: 30px; height: 30px; color: var(--rose); margin-bottom: 8px; }
+.tile h3 { font-size: 19px; font-weight: 700; color: var(--fg1); letter-spacing: -.02em; }
+.tile p { font-size: 16px; line-height: 1.7; color: var(--fg3); }
+
+/* 맺음 */
+.closing .wrap { display: grid; justify-items: start; gap: 28px; padding-block: clamp(110px, 14vw, 180px); }
+.closing img.icon { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 20px 40px -18px rgba(var(--shadow), .55); }
+.closing h2 { font-size: clamp(38px, 6.4vw, 86px); line-height: 1.08; letter-spacing: -.045em; color: var(--fg1); font-weight: 800; }
+.closing h2 .ten { font-weight: 100; letter-spacing: -.06em; }
+.closing h2 .soft { display: block; font-weight: 200; }
+
+footer { padding-block: 40px 56px; border-top: 1px solid var(--line); font-size: 14px; color: var(--fg3); }
+footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+footer a { text-decoration: none; color: var(--fg2); }
+footer a:hover { text-decoration: underline; }
+footer .who { margin-left: auto; }
+@media (max-width: 700px) { footer .who { margin-left: 0; width: 100%; } }
+
+/* 스크롤에 따라 살짝 떠오름 — 쉴 때도 다 보인다(모양만 움직임) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rise { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    @keyframes rise { from { transform: translateY(48px) scale(.97); } to { transform: none; } }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track { animation: none; }
+  .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .daycard .tint { transition: none; }
+}
+</style>
+
+</head>
+<body>
+<div class="nav nav-wrap">
+  <div class="nav-in">
+    <a class="brand" href="#top"><img src="/img/icon.png" alt="" width="36" height="36">mo.Days</a>
+    <nav class="nav-links" aria-label="사이트">
+      <a class="opt" href="#features">기능</a>
+      <a href="/support">지원</a>
+      <a class="opt" href="/en/" lang="en">English</a>
+    </nav>
+    <a class="nav-cta" href="https://apps.apple.com/app/id6817686720">받기</a>
+  </div>
+</div>
+
+<main id="top">
+  <div class="backdrop">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div>
+          <p class="eyebrow">하루 한 장, 10년 뒤엔 자서전</p>
+          <h1 id="hero-title"><span class="thin">화면은 단순합니다.</span><span class="heavy">그 뒤는 그렇지 않습니다.</span></h1>
+          <p class="lede">내가 이름 붙인 장소, 내 사람들, 그 순간의 기온까지 — 카드 한 장 뒤에 그날이 통째로 남습니다.</p>
+          <div class="get" id="get">
+            <a class="store-badge" href="https://apps.apple.com/app/id6817686720"><img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/ko-kr" alt="App Store에서 다운로드하기" width="175" height="54" loading="eager"></a>
+            <span class="meta">iPhone 전용 · iOS 26 이상 · 한국어 · English</span>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="weekbar" aria-hidden="true">
+            <div><span class="wd-l">SUN</span><span class="wd-n" style="--g: var(--c-green)">13</span><span class="wd-dot none"></span></div>
+            <div><span class="wd-l">MON</span><span class="wd-n" style="--g: var(--c-red)">14</span><span class="wd-dot"></span></div>
+            <div><span class="wd-l">TUE</span><span class="wd-n" style="--g: var(--c-green)">15</span><span class="wd-dot"></span></div>
+            <div><span class="wd-l">WED</span><span class="wd-n" style="--g: var(--c-purple)">16</span><span class="wd-dot"></span></div>
+            <div><span class="wd-l">THU</span><span class="wd-n" style="--g: var(--c-bluegray)">17</span><span class="wd-dot"></span></div>
+            <div><span class="wd-l">FRI</span><span class="wd-n">18</span><span class="wd-dot"></span></div>
+            <div><span class="wd-l">SAT</span><span class="wd-n today" id="d19" style="--g: var(--c-orange)">19</span><span class="wd-dot"></span></div>
+          </div>
+
+          <div class="daycard" id="heroCard" data-color="orange" role="img" aria-label="하루 카드 — 19일 토요일 오늘, 은행나무 길의 사진에 오늘의 색이 스며 있고, '서두를 일 없이 제 걸음으로 가는 하루가 좋다'는 문장이 놓여 있습니다.">
+            <div class="face">
+              <img class="photo" src="/img/p-ginkgo.jpg" alt="" style="--pos: 50% 28%">
+              <div class="tint" data-c="bluegray" style="--c: var(--c-bluegray)"></div>
+              <div class="tint" data-c="green" style="--c: var(--c-green)"></div>
+              <div class="tint on" data-c="orange" style="--c: var(--c-orange)"></div>
+              <div class="tint" data-c="red" style="--c: var(--c-red)"></div>
+              <div class="tint" data-c="purple" style="--c: var(--c-purple)"></div>
+            </div>
+            <div class="content" aria-hidden="true">
+              <div class="dc-top"><span class="dc-num">19</span><span class="dc-wd">SAT</span><span class="dc-rel">오늘</span></div>
+              <div class="dc-bottom">
+                <span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>23°</span>
+                <div class="dc-q"><span class="g">“</span><p>서두를 일 없이 제 걸음으로 가는 하루가 좋다.</p><cite>— 유유자적</cite></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swatches" role="group" aria-label="오늘의 색">
+            <span class="swatches-label">오늘의 색</span>
+            <button class="swatch" type="button" id="sw-bluegray" aria-label="청회색" aria-pressed="false" style="--sw: var(--c-bluegray)"></button>
+            <button class="swatch" type="button" id="sw-green" aria-label="초록" aria-pressed="false" style="--sw: var(--c-green)"></button>
+            <button class="swatch" type="button" id="sw-orange" aria-label="주황" aria-pressed="true" style="--sw: var(--c-orange)"></button>
+            <button class="swatch" type="button" id="sw-red" aria-label="빨강" aria-pressed="false" style="--sw: var(--c-red)"></button>
+            <button class="swatch" type="button" id="sw-purple" aria-label="보라" aria-pressed="false" style="--sw: var(--c-purple)"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="days" id="features" aria-labelledby="f1-title">
+      <div class="wrap"><div class="days-head">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.8" y="5" width="18.4" height="14" rx="3.2"/><circle cx="7.6" cy="9.4" r="1.5"/><path d="M12.6 13.6h5M14.6 16.1h3"/></svg></span><span class="mark-name">하루 카드</span></div>
+        <h2 id="f1-title">사진 한 장, 색 하나, 문장 하나.<br>하루가 그렇게 남습니다.</h2>
+        <p class="intro">앱을 열면 오늘 한 장이 있습니다. 사진 위에 그날의 공기가 얹히고, 그 옆에 그날의 한 문장이 놓입니다.</p>
+      </div></div>
+
+      <div class="marquee" aria-label="지난 날들의 하루 카드">
+        <div class="track" id="track">
+          <div class="daycard" role="img" aria-label="19일 토요일, 오늘">
+            <div class="face"><img class="photo" src="/img/p-ginkgo.jpg" alt="" style="--pos: 50% 28%"><div class="tint on" style="--c: var(--c-orange)"></div></div>
+            <div class="content" aria-hidden="true">
+              <div class="dc-top"><span class="dc-num">19</span><span class="dc-wd">SAT</span><span class="dc-rel">오늘</span></div>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>23°</span>
+                <div class="dc-q"><span class="g">“</span><p>서두를 일 없이 제 걸음으로 가는 하루가 좋다.</p><cite>— 유유자적</cite></div></div>
+            </div>
+          </div>
+          <div class="daycard" role="img" aria-label="18일 금요일, 어제 — 색을 고르지 않은 날">
+            <div class="face"><img class="photo" src="/img/p-wall.jpg" alt="" style="--pos: 50% 30%"><div class="tint gray on"></div></div>
+            <div class="content" aria-hidden="true">
+              <div class="dc-top"><span class="dc-num">18</span><span class="dc-wd">FRI</span><span class="dc-rel">어제</span></div>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>15° / 7°</span></div>
+            </div>
+          </div>
+          <div class="daycard" role="img" aria-label="17일 목요일, 그저께">
+            <div class="face"><img class="photo" src="/img/p-beach.jpg" alt="" style="--pos: 50% 55%"><div class="tint on" style="--c: var(--c-bluegray)"></div></div>
+            <div class="content" aria-hidden="true">
+              <div class="dc-top"><span class="dc-num">17</span><span class="dc-wd">THU</span><span class="dc-rel">그저께</span></div>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.2a4 4 0 0 0 .6-7.95A5.6 5.6 0 0 0 7 10.3a4.1 4.1 0 0 0 0 8.2Z"/></svg>14° / 9°</span>
+                <div class="dc-q"><span class="g">“</span><p>파도는 같은 말을 몇 번이고 다시 한다.</p></div></div>
+            </div>
+          </div>
+          <div class="daycard" role="img" aria-label="16일 수요일, 3일 전">
+            <div class="face"><img class="photo" src="/img/p-dog.jpg" alt="" style="--pos: 50% 60%"><div class="tint on" style="--c: var(--c-purple)"></div></div>
+            <div class="content" aria-hidden="true">
+              <div class="dc-top"><span class="dc-num">16</span><span class="dc-wd">WED</span><span class="dc-rel">3일 전</span></div>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>18° / 11°</span>
+                <div class="dc-q"><span class="g">“</span><p>아무 데도 안 가고, 아무것도 안 한 날.</p></div></div>
+            </div>
+          </div>
+          <div class="daycard" role="img" aria-label="15일 화요일, 4일 전">
+            <div class="face"><img class="photo" src="/img/p-latte.jpg" alt="" style="--pos: 50% 50%"><div class="tint on" style="--c: var(--c-green)"></div></div>
+            <div class="content" aria-hidden="true">
+              <div class="dc-top"><span class="dc-num">15</span><span class="dc-wd">TUE</span><span class="dc-rel">4일 전</span></div>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.2a4 4 0 0 0 .6-7.95A5.6 5.6 0 0 0 7 10.3a4.1 4.1 0 0 0 0 8.2Z"/></svg>17° / 12°</span>
+                <div class="dc-q m"><span class="g">“</span><p>시작이 반이라는 말은, 나머지 반이 아직 남았다는 말이기도 하다.</p></div></div>
+            </div>
+          </div>
+          <div class="daycard" role="img" aria-label="14일 월요일, 5일 전">
+            <div class="face"><img class="photo" src="/img/p-sunset.jpg" alt="" style="--pos: 50% 40%"><div class="tint on" style="--c: var(--c-red)"></div></div>
+            <div class="content" aria-hidden="true">
+              <div class="dc-top"><span class="dc-num">14</span><span class="dc-wd">MON</span><span class="dc-rel">5일 전</span></div>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>21° / 13°</span>
+                <div class="dc-q"><span class="g">“</span><p>하늘이 저렇게 타는 걸 처음 봤다.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <div class="trio-points">
+          <div class="point"><h3>그날의 분위기가 사진에 스밉니다</h3><p>하루의 끝에 오늘의 색을 고릅니다. 색은 동그라미로 남지 않고 사진에 스며들어, 그날의 공기가 됩니다.</p></div>
+          <div class="point"><h3>그날의 한 문장</h3><p>무엇이든 됩니다. 문득 떠오른 생각도, 오래 남은 구절도, 그날의 나에게만 뜻이 있는 한 줄도.</p></div>
+          <div class="point"><h3>손끝에 펼쳐지는 시간</h3><p>카드를 옆으로 밀면 어제가 옵니다. 그저께가 옵니다. 미는 만큼 하루씩 지나갑니다.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="feature" aria-labelledby="f2-title">
+    <div class="wrap split">
+      <div class="copy">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.4 2.8v6.6M5.4 14.6v6.6"/><circle cx="5.4" cy="12" r="2.4" fill="currentColor" stroke="none"/><rect x="10" y="6.4" width="11.6" height="11.2" rx="2.6"/><path d="M13 10.4h5.6M13 13.6h3.6"/></svg></span><span class="mark-name">모먼트</span></div>
+        <h2 id="f2-title">그날 그 자리의 기온까지, 그대로 남습니다.</h2>
+        <p class="intro">기록 하나에 글과 사진만 담기는 것이 아닙니다. 몇 시였는지, 어디였는지, 누구와 있었는지, 그날 공기가 어땠는지가 함께 남습니다.</p>
+        <ul class="facts">
+          <li><span class="k">날씨</span><span class="v"><b>그때 그대로 박제됩니다</b><span>삼 년 뒤에 열어도, 그날 그 자리는 여전히 영하 사 도입니다.</span></span></li>
+          <li><span class="k">장소</span><span class="v"><b>내가 부르는 이름으로 남습니다</b><span>○○커피 3호점이 아니라, 그때 그 창가로.</span></span></li>
+          <li><span class="k">사람</span><span class="v"><b>만난 사람도, 떠올린 사람도</b><span>그 자리에 없었지만 생각났던 사람도 적을 수 있습니다.</span></span></li>
+          <li><span class="k">새벽</span><span class="v"><b>자정을 넘긴 밤</b><span>시간은 새벽 한 시 그대로 두고, 그 일이 속한 날만 어제로 둘 수 있습니다.</span></span></li>
+        </ul>
+      </div>
+      <div class="media">
+        <figure class="phone b"><img src="/img/m-view.jpg" alt="하루 펼쳐 읽기 화면 — 기록마다 시각과 장소, 날씨가 붙어 있습니다" width="720" height="1469"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature alt" aria-labelledby="f3-title">
+    <div class="wrap split flip">
+      <div class="copy">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.4 11.3l-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l8.5-8.5a3.7 3.7 0 0 1 5.2 5.2l-8.5 8.5a1.85 1.85 0 0 1-2.6-2.6l7.8-7.8"/></svg></span><span class="mark-name">클립과 빠른 클립</span></div>
+        <h2 id="f3-title">지금은 던져두세요.<br>완성은 나중에.</h2>
+        <p class="intro">남기고 싶은 순간은 대개 손이 바쁠 때 옵니다. 그래서 조각만 던져두고 나중에 돌아옵니다.</p>
+        <div class="points">
+          <div class="point"><h3>조각은 조각인 채로 둡니다</h3><p>한 줄만 적어도, 사진 한 장만 넣어도, 아무것도 없이 지금 이 자리만 남겨도 됩니다.</p></div>
+          <div class="point"><h3>앱을 열지 않아도 됩니다</h3><p>잠금 화면의 버튼 하나로, 폰을 열지 않고 남습니다. 측면 버튼에 걸어 둘 수도, 말로 시킬 수도 있습니다.</p></div>
+          <div class="point"><h3>흩어진 조각이 여정이 됩니다</h3><p>들른 곳마다 던져 둔 조각을 하나로 묶으면, 그 사이의 이동과 시간의 폭이 저절로 드러납니다.</p></div>
+        </div>
+      </div>
+      <div class="media duo">
+        <figure class="phone"><img src="/img/m-plus.jpg" alt="+ 카드를 누르면 펼쳐지는 여섯 가지 시작 방법" width="720" height="1469"></figure>
+        <figure class="phone b"><img src="/img/m-widget.jpg" alt="홈 화면의 moDays 위젯" width="720" height="1469"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature" aria-labelledby="f4-title">
+    <div class="wrap">
+      <div class="steps-head">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.8 6.6l1.6 1.6 3-3.1"/><path d="M12 6.8h8"/><path d="M3.8 12.2l1.6 1.6 3-3.1"/><path d="M12 12.4h8"/><circle cx="6" cy="18" r="1.9"/><path d="M12 18h5.5"/></svg></span><span class="mark-name">하루 정리</span></div>
+        <h2 id="f4-title">따라가다 보면 하루가 정리됩니다.</h2>
+        <p class="intro">저녁이면 한 번 묻습니다. 오늘 하루는 어땠느냐고. 이미 정리를 마친 밤에는 부르지 않습니다.</p>
+      </div>
+      <ol class="steps">
+        <li><figure class="phone"><img src="/img/m-organize.jpg" alt="타임라인 맨 위의 정리 카드" width="720" height="1469"></figure>
+          <div class="point"><h3>묻는 것에 답하면 됩니다</h3><p>차례로 묻고, 해당 없는 것은 알아서 넘어갑니다.</p></div></li>
+        <li><figure class="phone b"><img src="/img/m-color.jpg" alt="오늘의 색을 고르는 걸음" width="720" height="1469"></figure>
+          <div class="point"><h3>색 하나만 골라도 됩니다</h3><p>아무것도 쓰지 않은 날에도 색 하나면 그날은 완성입니다.</p></div></li>
+        <li><figure class="phone"><img src="/img/m-last.jpg" alt="마지막 걸음 — 그날의 카드 미리보기" width="720" height="1469"></figure>
+          <div class="point"><h3>끝에서 오늘의 얼굴을 봅니다</h3><p>마지막에 그날의 카드가 미리 보입니다. 오늘이 어떻게 남을지 보고 닫습니다.</p></div></li>
+      </ol>
+      <p class="note"><b>닫았다고 끝은 아닙니다.</b> 나중에 마음이 바뀌면 그 날짜를 눌러 다시 들어갑니다. 며칠 지난 날도, 몇 해 전 날도 같습니다.</p>
+    </div>
+  </section>
+
+  <section class="feature alt" aria-labelledby="f5-title">
+    <div class="wrap split">
+      <div class="copy">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.4" y="3.6" width="5.2" height="4.6" rx="1.2"/><rect x="2.4" y="15.8" width="5.2" height="4.6" rx="1.2"/><path d="M7.6 5.9h2.5v12.2H7.6M10.1 12h2.3"/><rect x="12.4" y="7.6" width="9.2" height="8.8" rx="2.2"/></svg></span><span class="mark-name">사진 경합</span></div>
+        <h2 id="f5-title">뒤지고 고르지 않아도, 자연스레 인생사진이 정해집니다.</h2>
+        <p class="intro">이상형 월드컵을 해 보셨다면, 이미 아시는 방식입니다. 사진 두 장이 나란히 섭니다. 마음이 가는 쪽을 고릅니다. 그게 전부입니다.</p>
+        <div class="bracket-box"><ol class="bracket" aria-label="단마다 두 장 가운데 하나가 이겨 다음 단으로 올라갑니다 — 하루, 한 주, 한 달, 한 해, 그리고 인생의 한 장"><li><span class="pair"><span class="t"><img src="/img/t-brunch.jpg" alt=""></span><span class="t win"><img src="/img/t-hug.jpg" alt=""></span></span><span class="lv">하루</span></li><span class="chev" aria-hidden="true"></span><li><span class="pair"><span class="t win"><img src="/img/t-hug.jpg" alt=""></span><span class="t"><img src="/img/t-latte.jpg" alt=""></span></span><span class="lv">한 주</span></li><span class="chev" aria-hidden="true"></span><li><span class="pair"><span class="t"><img src="/img/t-hug.jpg" alt=""></span><span class="t win"><img src="/img/t-beach.jpg" alt=""></span></span><span class="lv">한 달</span></li><span class="chev" aria-hidden="true"></span><li><span class="pair"><span class="t win"><img src="/img/t-beach.jpg" alt=""></span><span class="t"><img src="/img/t-ginkgo.jpg" alt=""></span></span><span class="lv">한 해</span></li><span class="chev" aria-hidden="true"></span><li class="final"><span class="pair"><span class="t win"><img src="/img/t-beach.jpg" alt=""><span class="star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.75 5.9 6.45.75-4.78 4.4 1.3 6.37L12 17l-5.72 3.22 1.3-6.37L2.8 9.45l6.45-.75Z"/></svg></span></span></span><span class="lv">인생의 한 장</span></li></ol></div>
+        <p class="ladder-cap">당신은 매번 둘 중 하나를 골랐을 뿐입니다.</p>
+        <div class="points">
+          <div class="point"><h3>고르는 일 자체가 기록이 됩니다</h3><p>나중에 마음이 바뀌어 다르게 골라도, 지난 선택은 지워지지 않습니다.</p></div>
+          <div class="point"><h3>못 고르겠으면 안 골라도 됩니다</h3><p>도저히 가릴 수 없는 두 장은 미뤄 둡니다. 미룬 판은 언제든 다시 열립니다.</p></div>
+        </div>
+      </div>
+      <div class="media">
+        <figure class="phone b"><img src="/img/m-contest.jpg" alt="사진 두 장이 나란히 놓인 사진 경합 화면" width="720" height="1469"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature" aria-labelledby="f6-title">
+    <div class="wrap split flip">
+      <div class="copy">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.4" cy="10.4" r="6.2"/><path d="m15.2 15.2 5.3 5.3"/></svg></span><span class="mark-name">찾기와 모아 보기</span></div>
+        <h2 id="f6-title">언제였는지 몰라도 찾아집니다.</h2>
+        <p class="intro">기억나는 것은 대개 날짜가 아닙니다. 누구와 있었는지, 어디였는지, 무슨 이야기를 했는지입니다.</p>
+        <div class="chips" aria-label="찾는 조건의 예"><span class="on">사람</span><span>장소</span><span class="on">태그</span><span>사진</span><span>기간</span></div>
+        <div class="points">
+          <div class="point"><h3>날짜 말고 무엇으로든</h3><p>조건을 겹칠수록 좁아집니다. 적어 둔 글과 태그, 사람 이름, 장소, 그날의 문장까지 전부 뒤집니다.</p></div>
+          <div class="point"><h3>이 사람으로 모아 보기</h3><p>기록을 읽다가 이름을 길게 누르면, 그 사람이 나온 날들이 한자리에 모입니다.</p></div>
+          <div class="point"><h3>지난 시간에 나중에 이름을 붙입니다</h3><p>«출근»으로 오 년치를 불러낸 뒤, 그 전부에 «회사 A 시절»이라고 한 번에 이름 붙일 수 있습니다.</p></div>
+        </div>
+      </div>
+      <div class="media duo">
+        <figure class="phone"><img src="/img/m-search.jpg" alt="조건을 겹쳐 좁혀 들어간 찾기 결과" width="720" height="1469"></figure>
+        <figure class="phone b"><img src="/img/m-collect.jpg" alt="한 사람으로 모인 기록들" width="720" height="1469"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="night" aria-labelledby="f7-title">
+    <div class="wrap">
+      <div class="night-top">
+        <div class="night-copy">
+      <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.5 17.6A9.6 9.6 0 0 1 12 19.5C5.6 19.5 2.2 12 2.2 12a17 17 0 0 1 4.4-5.5M9.8 4.7A8.9 8.9 0 0 1 12 4.5c6.4 0 9.8 7.5 9.8 7.5a17.4 17.4 0 0 1-2.1 3.1M14.1 14.2a3 3 0 0 1-4.3-4.3"/><path d="M3 3l18 18"/></svg></span><span class="mark-name">비밀로 두기</span></div>
+      <h2 id="f7-title">숨긴 것이 있다는 것조차 보이지 않습니다.</h2>
+      <p class="intro">잠긴 폴더가 있다는 것 자체가 이미 들킨 것입니다.</p>
+      <blockquote>더 이상 보여드릴 수 있는 것이 없습니다.<br>당신의 기록도 마찬가지일 겁니다.</blockquote>
+        </div>
+        <svg class="lock" viewBox="0 0 120 140" fill="none" aria-hidden="true">
+        <path d="M32 62V42a28 28 0 0 1 56 0v20" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <rect x="14" y="60" width="92" height="74" rx="18" fill="currentColor"/>
+        <circle cx="60" cy="92" r="7" fill="var(--night)"/><rect x="57" y="96" width="6" height="16" rx="3" fill="var(--night)"/>
+      </svg>
+      </div>
+      <div class="night-points">
+        <div class="point"><h3>잠기는 게 아니라, 없습니다</h3><p>비밀로 둔 기록에는 자물쇠가 붙지 않습니다. 그냥 그 자리에 없습니다.</p></div>
+        <div class="point"><h3>열어 보라고 할 때</h3><p>다른 번호를 알려주면 됩니다. 그 번호로도 앱은 멀쩡히 열립니다. 비밀로 둔 것만 없을 뿐입니다.</p></div>
+        <div class="point"><h3>번호를 누를 틈도 없을 때</h3><p>정해 둔 손짓 하나면 그 자리에서 넘어갑니다.</p></div>
+        <div class="point"><h3>켜지 않으면 존재하지 않습니다</h3><p>이 기능을 쓰지 않는 분에게는 앱 어디에도 «숨김»이라는 말이 나오지 않습니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature" aria-labelledby="f8-title">
+    <div class="wrap split">
+      <div class="copy">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.6" y="4" width="18.8" height="4.6" rx="1.3"/><path d="M4.2 8.6v10a1.6 1.6 0 0 0 1.6 1.6h12.4a1.6 1.6 0 0 0 1.6-1.6v-10"/><path d="M10 12.6h4"/></svg></span><span class="mark-name">보관함</span></div>
+        <h2 id="f8-title">지운 게 아니라, 치워둔 겁니다.</h2>
+        <p class="intro">지금 보고 싶지 않은 것과, 없애고 싶은 것은 다릅니다.</p>
+        <div class="points">
+          <div class="point"><h3>자리를 비키는 것뿐입니다</h3><p>보관함에 넣으면 타임라인에서, 찾기 결과에서, 사진 경합에서 빠집니다. 지울까 망설이던 것에 다른 답이 하나 생깁니다.</p></div>
+          <div class="point"><h3>언제든 다시 꺼냅니다</h3><p>꺼내면 있던 자리로 그대로 돌아갑니다.</p></div>
+          <div class="point"><h3>숨기는 것과는 다릅니다</h3><p>남에게 감추려는 게 아니라, 내 눈에 지금 두고 싶지 않은 것들의 자리입니다.</p></div>
+        </div>
+      </div>
+      <div class="media duo">
+        <figure class="phone b"><img src="/img/m-archive-in.jpg" alt="기록을 보관함으로 밀어 넣는 순간" width="720" height="1469"></figure>
+        <figure class="phone"><img src="/img/m-archive.jpg" alt="보관함 화면" width="720" height="1469"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature alt" aria-labelledby="f9-title">
+    <div class="wrap">
+      <div class="shelf-head">
+        <div class="mark"><span class="mark-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.4" y="5.2" width="4" height="13.8" rx="1"/><rect x="8.6" y="3.6" width="4" height="15.4" rx="1"/><path d="m14.3 6.3 3.6-1 3.6 12.6-3.6 1Z"/><path d="M2.4 20.6h19.2"/></svg></span><span class="mark-name">주간 · 월간 · 인생 뷰</span></div>
+        <h2 id="f9-title">10년 뒤, 자서전이 이미 쓰여 있습니다.</h2>
+        <p class="intro">하루는 한 페이지입니다. 한 달은 한 챕터, 한 해는 한 권.</p>
+      </div>
+      <ol class="shelf">
+        <li><figure class="phone"><img src="/img/m-daily.jpg" alt="하루 — 오늘 화면" width="720" height="1469"></figure><div class="lv"><b>하루</b></div></li>
+        <li><figure class="phone b"><img src="/img/m-week.jpg" alt="한 주 — 주간 뷰" width="720" height="1469"></figure><div class="lv"><b>한 주</b></div></li>
+        <li><figure class="phone"><img src="/img/m-month.jpg" alt="한 달 — 월간 뷰" width="720" height="1469"></figure><div class="lv"><b>한 달</b></div></li>
+        <li><figure class="phone b"><img src="/img/m-life.jpg" alt="십 년 — 인생 뷰" width="720" height="1469"></figure><div class="lv"><b>십 년</b></div></li>
+      </ol>
+      <div class="shelf-points">
+        <div class="point"><h3>하루에서 십 년까지</h3><p>내려갈수록 하루에 가까워지고, 올라갈수록 인생에 가까워집니다.</p></div>
+        <div class="point"><h3>그 시절의 말을 남깁니다</h3><p>«신혼», «수험생», «자취». 한 시기에만 있던 말들이 나중에 보면 그 시절의 이름이 되어 있습니다.</p></div>
+        <div class="point"><h3>알고리즘이 고른 하이라이트가 아닙니다</h3><p>매일 당신이 고른 색, 사진, 문장이 그대로 쌓인 것입니다. 편집자는 처음부터 끝까지 당신입니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="more feature alt" aria-labelledby="more-title" style="padding-top: 0">
+    <div class="wrap">
+      <h2 id="more-title">그리고</h2>
+      <div class="tiles">
+        <div class="tile">
+          <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 23h13.6a5.2 5.2 0 0 0 .8-10.35A7.3 7.3 0 0 0 8.6 12a5.5 5.5 0 0 0-.1 11Z"/></svg>
+          <h3>기기가 바뀌어도</h3><p>사진 원본까지 iCloud로 이어집니다. 새 폰을 열면 그대로 있습니다.</p>
+        </div>
+        <div class="tile">
+          <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15a9 9 0 1 0 2.6-6.4"/><path d="M6 5v4.6h4.6"/><path d="M15 10v5l3.4 2.2"/></svg>
+          <h3>따로 백업해 둘 수도</h3><p>되돌릴 때는 없어진 것만 되살아나고, 그 사이에 쓴 글은 그대로 있습니다. 덮어쓰지 않습니다.</p>
+        </div>
+        <div class="tile">
+          <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="15" cy="15" r="10"/><path d="m10.5 15.2 3 3 6-6.4"/></svg>
+          <h3>mo.Today를 쓰고 계시다면</h3><p>저녁 정리 자리에 오늘 해낸 할 일과 지켜낸 루틴이 이미 와 있습니다. 남길 것만 고르면 됩니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="backdrop closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <img class="icon" src="/img/icon.png" alt="moDays 앱 아이콘" width="88" height="88">
+      <h2 id="closing-title"><span class="soft">하루 한 장,</span><span class="ten">10</span>년 뒤엔 자서전</h2>
+      <div class="get" style="margin-top: 4px">
+        <a class="store-badge" href="https://apps.apple.com/app/id6817686720"><img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/ko-kr" alt="App Store에서 다운로드하기" width="175" height="54" loading="eager"></a>
+        <span class="meta" style="color: var(--fg2)">iPhone 전용 · iOS 26 이상</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand" style="font-size: 16px">mo.Days</span>
+    <nav aria-label="바닥글">
+      <a href="/support">지원</a>
+      <a href="/privacy">개인정보 처리방침</a>
+      <a href="/en/" lang="en">English</a>
+    </nav>
+    <span class="who">moPlanet · moplanetapps@gmail.com</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // 오늘의 색 — 다섯 색을 천천히 돌다가, 누르면 그 색에 멈춘다.
+  const order = ["bluegray", "green", "orange", "red", "purple"];
+  const card = document.getElementById("heroCard");
+  const today = document.getElementById("d19");
+  const tints = [...card.querySelectorAll(".tint")];
+  const buttons = order.map(c => document.getElementById("sw-" + c));
+  let idx = 2, timer = null;
+
+  function setColor(i) {
+    idx = i;
+    const c = order[i];
+    card.dataset.color = c;
+    tints.forEach(t => t.classList.toggle("on", t.dataset.c === c));
+    buttons.forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+    today.style.setProperty("--g", "var(--c-" + c + ")");
+  }
+  buttons.forEach((b, i) => b.addEventListener("click", () => {
+    if (timer) { clearInterval(timer); timer = null; }
+    setColor(i);
+  }));
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!calm) {
+    timer = setInterval(() => { if (!document.hidden) setColor((idx + 1) % order.length); }, 3400);
+  }
+
+  // 하루 카드 흐름 — 끊김 없이 돌도록 한 벌을 더 붙인다(읽기 도구에는 숨김).
+  const track = document.getElementById("track");
+  if (!calm && track) {
+    [...track.children].forEach(n => {
+      const copy = n.cloneNode(true);
+      copy.setAttribute("aria-hidden", "true");
+      copy.removeAttribute("role");
+      copy.removeAttribute("aria-label");
+      track.appendChild(copy);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
