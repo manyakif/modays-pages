@@ -27,18 +27,6 @@
 </head>
 <body>
 
-<div class="nav nav-wrap">
-  <div class="nav-in">
-    <a class="brand" href="{% if en %}/en/{% else %}/{% endif %}"><img src="/img/icon.png" alt="" width="42" height="42">mo.Days</a>
-    <nav class="nav-links" aria-label="{% if en %}Site{% else %}사이트{% endif %}">
-      <a class="opt" href="{% if en %}/en/#features{% else %}/#features{% endif %}">{% if en %}Features{% else %}기능{% endif %}</a>
-      <a href="{% if en %}/en/support{% else %}/support{% endif %}">{% if en %}Support{% else %}지원{% endif %}</a>
-      {% if en %}<a class="opt" href="{{ page.alt_ko }}" lang="ko">한국어</a>{% else %}<a class="opt" href="{{ page.alt_en }}" lang="en">English</a>{% endif %}
-    </nav>
-    <a class="nav-cta" href="{% if en %}https://apps.apple.com/app/id6817686720{% else %}https://apps.apple.com/kr/app/modays/id6817686720{% endif %}">{% if en %}Get{% else %}받기{% endif %}</a>
-  </div>
-</div>
-
 <header class="backdrop doc-hero">
   <div class="wrap">
     <div class="mark">
@@ -59,7 +47,7 @@
 
 <footer>
   <div class="wrap">
-    <span class="brand" style="font-size: 16px">mo.Days</span>
+    <a class="brand" href="{% if en %}/en/{% else %}/{% endif %}" style="font-size: 16px">mo.Days</a>
     <nav aria-label="{% if en %}Footer{% else %}바닥글{% endif %}">
       {% if en %}<a href="/en/support">Support</a>
       <a href="/en/privacy">Privacy Policy</a>

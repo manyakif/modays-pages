@@ -20,11 +20,6 @@
   --night-fg: #F2EBE3;
   --night-fg2: #A49D96;
   --shadow: 40, 26, 16;
-  --nav-bg: rgba(28, 24, 20, .94);   /* 메뉴 막대 — 라이트는 먹색(neutral900), 다크는 크림으로 뒤집어 무게를 잡는다 */
-  --nav-fg: #FFFBF7;
-  --nav-fg2: rgba(255, 251, 247, .78);
-  --nav-line: rgba(255, 255, 255, .10);
-  --nav-hover: rgba(255, 255, 255, .10);
   --mark-a: #E84F7A;      /* 기능 표식 타일 — brandCore → brandDeep */
   --mark-b: #B12B55;
   --mark-glow: rgba(177, 43, 85, .55);
@@ -44,7 +39,6 @@
     --veil: rgba(23, 22, 20, .65); --glass: rgba(57, 54, 50, .55); --glass-line: rgba(255, 255, 255, .14);
     --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
     --mark-a: #D45B78; --mark-b: #9A3451; --mark-glow: rgba(0, 0, 0, .55);
-    --nav-bg: rgba(242, 235, 227, .95); --nav-fg: #1C1814; --nav-fg2: rgba(28, 24, 20, .72); --nav-line: rgba(0, 0, 0, .08); --nav-hover: rgba(0, 0, 0, .06);
     color-scheme: dark;
   }
 }
@@ -55,7 +49,6 @@
   --veil: rgba(23, 22, 20, .65); --glass: rgba(57, 54, 50, .55); --glass-line: rgba(255, 255, 255, .14);
   --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
   --mark-a: #D45B78; --mark-b: #9A3451; --mark-glow: rgba(0, 0, 0, .55);
-  --nav-bg: rgba(242, 235, 227, .95); --nav-fg: #1C1814; --nav-fg2: rgba(28, 24, 20, .72); --nav-line: rgba(0, 0, 0, .08); --nav-hover: rgba(0, 0, 0, .06);
   color-scheme: dark;
 }
 
@@ -92,38 +85,8 @@ ol, ul { padding: 0; list-style: none; }
 }
 .backdrop::after { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--veil); }
 
-/* ── 메뉴 막대 — 짙은 먹색 알약이 화면 위에서 무게를 잡는다 */
-.nav {
-  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 50;
-  height: 68px; margin-bottom: -68px;
-}
-.nav-in {
-  display: flex; align-items: center; gap: 10px;
-  max-width: 1120px; height: 64px; margin-inline: auto;
-  padding: 0 10px 0 12px;
-  background: var(--nav-bg); color: var(--nav-fg);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
-  border: 1px solid var(--nav-line); border-radius: 999px;
-  box-shadow: 0 16px 36px -16px rgba(var(--shadow), .55);
-}
-.nav-wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+/* ── 이름 글자 — 바닥글의 «mo.Days»(첫 페이지로 가는 링크) */
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg1); font-weight: 600; font-size: 18px; letter-spacing: -.01em; }
-.nav .brand { gap: 12px; color: var(--nav-fg); font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
-.nav .brand img { width: 42px; height: 42px; border-radius: 11px; }
-.nav-links { display: flex; gap: 4px; margin-left: auto; }
-.nav-links a { text-decoration: none; font-size: 16px; font-weight: 600; color: var(--nav-fg2); padding: 10px 14px; border-radius: 999px; transition: background .2s ease, color .2s ease; }
-.nav-links a:hover { background: var(--nav-hover); color: var(--nav-fg); }
-.nav-cta {
-  text-decoration: none; font-size: 16px; font-weight: 700; color: #fff; background: var(--rose);
-  padding: 12px 22px; border-radius: 999px; box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
-}
-.nav-cta:hover { background: var(--rose-deep); }
-@media (max-width: 560px) {
-  .nav-links a.opt { display: none; }
-  .nav .brand { font-size: 19px; }
-  .nav .brand img { width: 38px; height: 38px; }
-  .nav-cta { padding: 11px 18px; }
-}
 
 /* ── 기능 표식 — 아이콘 타일 + 이름 */
 .mark { display: flex; align-items: center; gap: 14px; }
@@ -143,7 +106,7 @@ ol, ul { padding: 0; list-style: none; }
 
 
 /* ── 문서 머리 — 첫 페이지와 같은 앱 바탕 띠, 짧게 */
-.doc-hero .wrap { display: grid; gap: 22px; padding-block: 136px 64px; }
+.doc-hero .wrap { display: grid; gap: 22px; padding-block: 64px; }
 .doc-hero h1 { font-size: clamp(36px, 5.2vw, 64px); line-height: 1.12; letter-spacing: -.035em; font-weight: 800; color: var(--fg1); text-wrap: balance; }
 :lang(en) .doc-hero h1 { letter-spacing: -.025em; }
 
