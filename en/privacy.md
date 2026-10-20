@@ -1,4 +1,12 @@
-# moDays Privacy Policy
+---
+layout: doc
+lang: en
+title: Privacy Policy
+icon: privacy
+alt_ko: /privacy
+alt_en: /en/privacy
+description: moDays keeps your entries only on your device and in your own iCloud. Nothing goes to an external server.
+---
 
 moDays ("the app") treats your personal information with care and provides this policy in accordance with applicable laws.
 
@@ -59,7 +67,7 @@ This policy may be updated as laws or the app's features change. Updates are ann
 
 For questions about this policy, write to:
 
-moplanetapps@gmail.com
+[moplanetapps@gmail.com](mailto:moplanetapps@gmail.com)
 
 ---
 

@@ -1,4 +1,12 @@
-# moDays Support
+---
+layout: doc
+lang: en
+title: Support
+icon: support
+alt_ko: /support
+alt_en: /en/support
+description: Questions about moDays — permissions, sync, backups, mo.Today, and how to reach us.
+---
 
 moDays is a journaling app that keeps each day in a color, a sentence, and photos.
 If you have questions or run into a problem, please check below.
@@ -25,8 +33,8 @@ Calendar events are read only to show that day's schedule while you wrap up your
 Check that notifications are allowed in iOS Settings > Notifications > Days.
 
 ### The lock won't open
-The lock opens with your device's Face ID or passcode.
-Check the Face ID permission in iOS Settings > Apps > Days.
+The lock opens with the passcode you set in the app, or with Face ID (Touch ID on devices that have it).
+If Face ID doesn't appear, check the Face ID permission in iOS Settings > Apps > Days.
 
 ### iCloud sync isn't working
 Make sure you are signed in at iOS Settings > [your name] > iCloud, and that the Days toggle is on.
@@ -45,14 +53,14 @@ Go to Settings > Display > App Language to jump to iOS Settings and change it.
 
 ## Tips
 
-- Pull the board at the top downward to open the calendar; push it upward to open the archive.
+- Pull the week bar down to open the calendar; push it up to open the archive.
 - You can always go back to a past day and add to it. Finishing later is fine.
 
 ## Contact
 
 For feature requests, bug reports, or anything else, write to:
 
-moplanetapps@gmail.com
+[moplanetapps@gmail.com](mailto:moplanetapps@gmail.com)
 
 We reply within 1–3 business days.
 
@@ -60,4 +68,4 @@ We reply within 1–3 business days.
 
 - Version: 1.0
 - Developer: moPlanet
-- Privacy Policy: https://modays.app/en/privacy
+- Privacy Policy: [modays.app/en/privacy](/en/privacy)
