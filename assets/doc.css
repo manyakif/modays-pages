@@ -87,7 +87,7 @@ ol, ul { padding: 0; list-style: none; }
 .backdrop { position: relative; isolation: isolate; overflow: hidden; color: var(--fg1); }
 .backdrop::before {
   content: ""; position: absolute; inset: 0; z-index: -2;
-  background: url("/img/bg-wide.jpg") center / cover no-repeat;
+  background: url("/img/bg-wide-12.jpg") center / cover no-repeat;
   filter: grayscale(1) brightness(1.045);
 }
 .backdrop::after { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--veil); }
