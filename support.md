@@ -66,6 +66,6 @@ iOS 설정 > [본인 이름] > iCloud에 로그인되어 있고, Days 토글이 
 
 ## 정보
 
-- 버전: 1.0
+- 버전: 1.0.1
 - 개발: moPlanet
 - 개인정보 처리방침: [modays.app/privacy](/privacy)
