@@ -222,7 +222,16 @@ ol, ul { padding: 0; list-style: none; }
    책등 하이라이트 8 · 틈 4 · 홈 8 · 사진 자리 302×199(위 16, 왼쪽 34, 오른쪽 16) · 연대 27pt heavy · 모서리 6 · 리넨 결 6pt 간격).
    폭은 둘째 장의 하루 카드에 대한 앱의 비(책 352 : 카드 424) */
 .lifebook { container-type: inline-size; display: grid; justify-items: center; }
-.book { container-type: inline-size; position: relative; width: 83cqw; aspect-ratio: 1; margin-bottom: 4cqw; }
+.book { container-type: inline-size; position: relative; aspect-ratio: 1; }
+.pile { position: relative; width: 100cqw; aspect-ratio: 440 / 420; }  /* 연대 책 세 권 — 지난 연대일수록 뒤에, 조금씩 기울여 */
+.pile .book { position: absolute; width: 66cqw; }
+.pile .b0 { right: 4cqw; top: 1cqw; transform: rotate(7deg); }
+.pile .b1 { left: 2cqw; top: 9cqw; transform: rotate(-5deg); }
+@media (min-width: 980px) { .pile .b1 { left: -8cqw; } }    /* 두 칸 배치에서는 2010년대 책을 글 쪽으로 내어 더미를 펼친다 */
+@media (min-width: 1200px) { .pile .b1 { left: -22cqw; } }
+.pile .b2 { right: 9cqw; bottom: 1cqw; transform: rotate(1deg); }
+.pile .b0 .cover, .pile .b1 .cover { filter: brightness(.9) saturate(.8); }  /* 지난 연대는 한 걸음 물러서게 */
+.pile .b1 .cover, .pile .b2 .cover { box-shadow: 0 6px 16px rgba(0, 0, 0, .45), 0 12px 30px rgba(0, 0, 0, .3); }
 .book .cover {
   position: absolute; inset: 0; overflow: hidden; border-radius: 1.7cqw;
   background:
@@ -327,19 +336,19 @@ ol, ul { padding: 0; list-style: none; }
 }
 .daycard .content {
   position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between;
-  padding: 1.89cqw 4.72cqw 4.72cqw; color: #fff;
+  padding: 1.89cqw 4.72cqw 4.72cqw; color: #fff; line-height: normal;  /* 앱처럼 글꼴 본래 높이로 — 본문의 줄 높이 1.65를 물려받으면 윗줄 글씨는 처지고 날씨 줄은 뜬다 */
   text-shadow: 0 .47cqw .71cqw rgba(0, 0, 0, .4);
 }
 .dc-top { display: flex; align-items: flex-start; }
-.dc-num { font-size: 22.64cqw; font-weight: 100; line-height: 1.05; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.dc-num { font-size: 22.64cqw; font-weight: 100; }  /* 앱처럼 숫자마다 제 폭으로(고정폭·자간 없음) */
 .dc-wd { margin-left: 1.89cqw; padding-top: 4.4cqw; font-size: 5.19cqw; font-weight: 500; color: rgba(255,255,255,.85); }
 .dc-rel { margin-left: auto; padding-top: 3.3cqw; font-size: 9.43cqw; font-weight: 300; color: rgba(255,255,255,.85); white-space: nowrap; }
 .dc-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqw; }
 .dc-wx { display: flex; align-items: center; gap: .94cqw; font-size: 5.19cqw; color: rgba(255,255,255,.85); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.dc-wx svg { width: 1.05em; height: 1.05em; flex: none; }
+.dc-wx svg { width: 1.16em; height: 1.16em; flex: none; }  /* 앱의 22pt 날씨 아이콘 폭에 맞춤 */
 .dc-q { display: flex; flex-direction: column; align-items: flex-end; gap: .94cqw; max-width: 66cqw; text-align: right; }
 .dc-q .g { font-family: var(--quote); font-size: 14.15cqw; line-height: 1; height: 7cqw; color: rgba(255,255,255,.55); }
-.dc-q p { font-size: 5.66cqw; line-height: 1.32; color: rgba(255,255,255,.88); text-shadow: 0 0 2.36cqw rgba(0,0,0,.3); }
+.dc-q p { font-size: 5.66cqw; color: rgba(255,255,255,.88); text-shadow: 0 0 2.36cqw rgba(0,0,0,.3); }
 .dc-q cite { font-style: normal; font-size: 3.77cqw; font-weight: 700; color: rgba(255,255,255,.68); }
 .dc-q.m .g { font-size: 11.8cqw; height: 5.9cqw; }
 .dc-q.m p { font-size: 4.72cqw; }
@@ -360,6 +369,7 @@ ol, ul { padding: 0; list-style: none; }
 }
 .track { display: flex; gap: 22px; width: max-content; padding-block: 8px 30px; animation: drift 80s linear infinite; }
 .track .daycard { width: clamp(270px, 30vw, 380px); flex: none; }
+.track .daycard .content { will-change: transform; }  /* 글자도 카드마다 따로 — 띠 전체가 함께 쓰는 판에 그리면 Safari가 처음 보이던 부분만 그려, 나중에 들어오는 카드의 글이 빈다 */
 .marquee:hover .track { animation-play-state: paused; }
 .days .track { padding-block: 8px 22px; }
 @keyframes drift { to { transform: translateX(calc(-50% - 11px)); } }
@@ -589,7 +599,7 @@ body { word-break: normal; }
         <div class="hero-copy">
           <div class="stack">
             <div class="slide on" data-slide="0">
-              <h1 class="hl" id="hero-title"><span class="thin">A card a day.</span><span class="heavy">In <span class="ten">10</span> years, a memoir.</span></h1>
+              <h1 class="hl" id="hero-title"><span class="thin">A card a day.</span><span class="heavy">In <span class="ten">10</span> years,<br>a memoir.</span></h1>
               <p class="lede">Each day's card adds up — into a book you'll open again someday.</p>
             </div>
             <div class="slide" data-slide="1">
@@ -609,8 +619,8 @@ body { word-break: normal; }
 
         <div class="stack hero-visual">
           <div class="slide on" data-slide="0">
-            <div class="lifebook" role="img" aria-label="The 2020s book from the Life view — its cover holds a photo of a ginkgo-lined street.">
-              <div class="book"><div class="cover"><img class="bk-photo" src="/img/p-ginkgo.jpg" alt="" style="--pos: 50% 28%"><span class="bk-year">2020s</span></div></div>
+            <div class="lifebook" role="img" aria-label="Three decade books from the Life view — the 2020s book lies on top of the 2000s and 2010s books, its cover holding a photo of a ginkgo-lined street.">
+              <div class="pile"><div class="book b0"><div class="cover"><img class="bk-photo" src="/img/p-beach.jpg" alt="" style="--pos: 50% 55%"><span class="bk-year">2000s</span></div></div><div class="book b1"><div class="cover"><img class="bk-photo" src="/img/p-sunset.jpg" alt="" style="--pos: 50% 62%"><span class="bk-year">2010s</span></div></div><div class="book b2"><div class="cover"><img class="bk-photo" src="/img/p-ginkgo.jpg" alt="" style="--pos: 50% 28%"><span class="bk-year">2020s</span></div></div></div>
             </div>
           </div>
           <div class="slide" data-slide="1">
@@ -637,7 +647,7 @@ body { word-break: normal; }
                 <div class="content" aria-hidden="true">
                   <div class="dc-top"><span class="dc-num">19</span><span class="dc-wd">SAT</span><span class="dc-rel">Today</span></div>
                   <div class="dc-bottom">
-                    <span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>73°</span>
+                    <span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.6" fill="currentColor" stroke="none"/><path d="M12 1.8v2.4M12 19.8v2.4M1.8 12h2.4M19.8 12h2.4M4.8 4.8l1.7 1.7M17.5 17.5l1.7 1.7M4.8 19.2l1.7-1.7M17.5 6.5l1.7-1.7"/></svg>73°</span>
                     <div class="dc-q"><span class="g">“</span><p>A day taken at one's own unhurried pace.</p></div>
                   </div>
                 </div>
@@ -670,7 +680,7 @@ body { word-break: normal; }
             <div class="face"><img class="photo" src="/img/p-ginkgo.jpg" alt="" style="--pos: 50% 28%"><div class="tint on" style="--c: var(--c-orange)"></div></div>
             <div class="content" aria-hidden="true">
               <div class="dc-top"><span class="dc-num">19</span><span class="dc-wd">SAT</span><span class="dc-rel">Today</span></div>
-              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>73°</span>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.6" fill="currentColor" stroke="none"/><path d="M12 1.8v2.4M12 19.8v2.4M1.8 12h2.4M19.8 12h2.4M4.8 4.8l1.7 1.7M17.5 17.5l1.7 1.7M4.8 19.2l1.7-1.7M17.5 6.5l1.7-1.7"/></svg>73°</span>
                 <div class="dc-q"><span class="g">“</span><p>A day taken at one's own unhurried pace.</p></div></div>
             </div>
           </div>
@@ -678,14 +688,14 @@ body { word-break: normal; }
             <div class="face"><img class="photo" src="/img/p-wall.jpg" alt="" style="--pos: 50% 30%"><div class="tint gray on"></div></div>
             <div class="content" aria-hidden="true">
               <div class="dc-top"><span class="dc-num">18</span><span class="dc-wd">FRI</span><span class="dc-rel">Yesterday</span></div>
-              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>59° / 45°</span></div>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.6" fill="currentColor" stroke="none"/><path d="M12 1.8v2.4M12 19.8v2.4M1.8 12h2.4M19.8 12h2.4M4.8 4.8l1.7 1.7M17.5 17.5l1.7 1.7M4.8 19.2l1.7-1.7M17.5 6.5l1.7-1.7"/></svg>59° / 45°</span></div>
             </div>
           </div>
           <div class="daycard" role="img" aria-label="Thursday the 17th, 2 days ago">
             <div class="face"><img class="photo" src="/img/p-beach.jpg" alt="" style="--pos: 50% 55%"><div class="tint on" style="--c: var(--c-bluegray)"></div></div>
             <div class="content" aria-hidden="true">
               <div class="dc-top"><span class="dc-num">17</span><span class="dc-wd">THU</span><span class="dc-rel">2 days ago</span></div>
-              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.2a4 4 0 0 0 .6-7.95A5.6 5.6 0 0 0 7 10.3a4.1 4.1 0 0 0 0 8.2Z"/></svg>57° / 48°</span>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M7 18.5h10.2a4 4 0 0 0 .6-7.95A5.6 5.6 0 0 0 7 10.3a4.1 4.1 0 0 0 0 8.2Z"/></svg>57° / 48°</span>
                 <div class="dc-q"><span class="g">“</span><p>The waves keep saying the same thing, over and over.</p></div></div>
             </div>
           </div>
@@ -693,7 +703,7 @@ body { word-break: normal; }
             <div class="face"><img class="photo" src="/img/p-dog.jpg" alt="" style="--pos: 50% 60%"><div class="tint on" style="--c: var(--c-purple)"></div></div>
             <div class="content" aria-hidden="true">
               <div class="dc-top"><span class="dc-num">16</span><span class="dc-wd">WED</span><span class="dc-rel">3 days ago</span></div>
-              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>64° / 52°</span>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.6" fill="currentColor" stroke="none"/><path d="M12 1.8v2.4M12 19.8v2.4M1.8 12h2.4M19.8 12h2.4M4.8 4.8l1.7 1.7M17.5 17.5l1.7 1.7M4.8 19.2l1.7-1.7M17.5 6.5l1.7-1.7"/></svg>64° / 52°</span>
                 <div class="dc-q"><span class="g">“</span><p>Went nowhere, did nothing. A good day.</p></div></div>
             </div>
           </div>
@@ -701,7 +711,7 @@ body { word-break: normal; }
             <div class="face"><img class="photo" src="/img/p-latte.jpg" alt="" style="--pos: 50% 50%"><div class="tint on" style="--c: var(--c-green)"></div></div>
             <div class="content" aria-hidden="true">
               <div class="dc-top"><span class="dc-num">15</span><span class="dc-wd">TUE</span><span class="dc-rel">4 days ago</span></div>
-              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18.5h10.2a4 4 0 0 0 .6-7.95A5.6 5.6 0 0 0 7 10.3a4.1 4.1 0 0 0 0 8.2Z"/></svg>63° / 54°</span>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M7 18.5h10.2a4 4 0 0 0 .6-7.95A5.6 5.6 0 0 0 7 10.3a4.1 4.1 0 0 0 0 8.2Z"/></svg>63° / 54°</span>
                 <div class="dc-q m"><span class="g">“</span><p>Well begun is half done. Which means the other half is still waiting.</p></div></div>
             </div>
           </div>
@@ -709,7 +719,7 @@ body { word-break: normal; }
             <div class="face"><img class="photo" src="/img/p-sunset.jpg" alt="" style="--pos: 50% 40%"><div class="tint on" style="--c: var(--c-red)"></div></div>
             <div class="content" aria-hidden="true">
               <div class="dc-top"><span class="dc-num">14</span><span class="dc-wd">MON</span><span class="dc-rel">5 days ago</span></div>
-              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>70° / 55°</span>
+              <div class="dc-bottom"><span class="dc-wx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.6" fill="currentColor" stroke="none"/><path d="M12 1.8v2.4M12 19.8v2.4M1.8 12h2.4M19.8 12h2.4M4.8 4.8l1.7 1.7M17.5 17.5l1.7 1.7M4.8 19.2l1.7-1.7M17.5 6.5l1.7-1.7"/></svg>70° / 55°</span>
                 <div class="dc-q"><span class="g">“</span><p>Never seen the sky burn like that.</p></div></div>
             </div>
           </div>
