@@ -5,10 +5,10 @@ title: Privacy Policy
 icon: privacy
 alt_ko: /privacy
 alt_en: /en/privacy
-description: moDays keeps your entries only on your device and in your own iCloud. Nothing goes to an external server.
+description: mo.Days keeps your entries only on your device and in your own iCloud. Nothing goes to an external server.
 ---
 
-moDays ("the app") treats your personal information with care and provides this policy in accordance with applicable laws.
+mo.Days ("the app") treats your personal information with care and provides this policy in accordance with applicable laws.
 
 This policy is effective from September 2026.
 

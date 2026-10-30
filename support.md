@@ -5,10 +5,10 @@ title: 지원
 icon: support
 alt_ko: /support
 alt_en: /en/support
-description: moDays 이용 중 궁금한 점 — 권한·동기화·백업·mo.Today 연동, 그리고 문의처.
+description: mo.Days 이용 중 궁금한 점 — 권한·동기화·백업·mo.Today 연동, 그리고 문의처.
 ---
 
-moDays는 하루를 색과 문장, 사진으로 남기는 기록 앱입니다.
+mo.Days는 하루를 색과 문장, 사진으로 남기는 기록 앱입니다.
 이용 중 궁금한 점이나 문제가 있으시면 아래를 확인해 주세요.
 
 ## 자주 묻는 질문
@@ -66,6 +66,6 @@ iOS 설정 > [본인 이름] > iCloud에 로그인되어 있고, Days 토글이 
 
 ## 정보
 
-- 버전: 1.0.2
+- 버전: 1.0.3
 - 개발: moPlanet
 - 개인정보 처리방침: [modays.app/privacy](/privacy)

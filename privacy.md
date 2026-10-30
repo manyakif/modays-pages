@@ -5,10 +5,10 @@ title: 개인정보 처리방침
 icon: privacy
 alt_ko: /privacy
 alt_en: /en/privacy
-description: moDays는 기록을 기기와 본인의 iCloud에만 둡니다. 외부 서버로 보내지 않습니다.
+description: mo.Days는 기록을 기기와 본인의 iCloud에만 둡니다. 외부 서버로 보내지 않습니다.
 ---
 
-moDays (이하 "본 앱")은 사용자의 개인정보를 소중하게 다루며, 관련 법령에 따라 본 처리방침을 안내합니다.
+mo.Days (이하 "본 앱")은 사용자의 개인정보를 소중하게 다루며, 관련 법령에 따라 본 처리방침을 안내합니다.
 
 본 처리방침은 2026년 9월부터 적용됩니다.
 

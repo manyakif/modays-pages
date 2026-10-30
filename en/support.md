@@ -5,10 +5,10 @@ title: Support
 icon: support
 alt_ko: /support
 alt_en: /en/support
-description: Questions about moDays — permissions, sync, backups, mo.Today, and how to reach us.
+description: Questions about mo.Days — permissions, sync, backups, mo.Today, and how to reach us.
 ---
 
-moDays is a journaling app that keeps each day in a color, a sentence, and photos.
+mo.Days is a journaling app that keeps each day in a color, a sentence, and photos.
 If you have questions or run into a problem, please check below.
 
 ## Frequently Asked Questions
@@ -66,6 +66,6 @@ We reply within 1–3 business days.
 
 ## Info
 
-- Version: 1.0.2
+- Version: 1.0.3
 - Developer: moPlanet
 - Privacy Policy: [modays.app/en/privacy](/en/privacy)
