@@ -66,6 +66,6 @@ We reply within 1–3 business days.
 
 ## Info
 
-- Version: 1.0.4
+- Version: 1.0.5
 - Developer: moPlanet
 - Privacy Policy: [modays.app/en/privacy](/en/privacy)
