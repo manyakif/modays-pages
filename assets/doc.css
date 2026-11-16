@@ -69,8 +69,10 @@ h1, h2, h3, p, figure, ol, ul, blockquote { margin: 0; }
 ol, ul { padding: 0; list-style: none; }
 :focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; border-radius: 6px; }
 
+/* 문서 쪽은 읽는 단 하나라 머리·본문·바닥글이 같은 단(본문 44rem + 좌우 16)에 서고, 그 단이 화면 가운데에 놓인다 —
+   틀을 1200으로 두면 그보다 좁은 창(iPad 가로 1180 — 앱 안 Safari 창 전체)에서 틀이 창을 채워 단이 왼쪽 끝에 붙고 오른쪽이 비었다. */
 .wrap {
-  max-width: 1200px; margin-inline: auto;
+  max-width: calc(44rem + 32px); margin-inline: auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
