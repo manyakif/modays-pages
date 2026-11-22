@@ -44,7 +44,9 @@
   --rose-soft: #FFE0EA;   /* brandSoft */
   --veil: rgba(156, 142, 129, .55);   /* 배경 판 모노톤 덮개 — neutral400 × 0.55 */
   --veil-color: transparent;           /* 원색 바탕(모노톤 끔) — 라이트는 덮개 없음 */
-  --veil-mono: rgba(156, 142, 129, .55);
+  --veil-mono: rgba(88, 79, 70, .55);   /* 하루 카드 띠 덮개 — 흰 글자가 읽히도록 살짝 어둡게 */
+  --days-fg: #FFFBF7;     /* 하루 카드 띠의 글자 — 흰색 */
+  --days-fg2: rgba(255, 251, 247, .86);
   --mono-filter: grayscale(1) contrast(2.08) brightness(1.045);  /* 원색 바탕의 대비 0.48을 되돌려 모노톤 판과 같은 결로 */
   --glass: rgba(255, 255, 255, .55);
   --glass-line: rgba(255, 255, 255, .6);
@@ -78,7 +80,7 @@
     --fg1: #E3DDD7; --fg2: #C7BFB8; --fg3: #A49D96; --fg4: #867F78;
     --rose: #CC5470; --rose-deep: #E8738C; --rose-soft: #452934;
     --veil: rgba(23, 22, 20, .65); --veil-color: rgba(23, 22, 20, .58); --veil-mono: rgba(23, 22, 20, .17); --mono-filter: grayscale(1) contrast(1.5); --glass: rgba(57, 54, 50, .55); --glass-line: rgba(255, 255, 255, .14);
-    --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
+    --days-fg: #E3DDD7; --days-fg2: #C7BFB8; --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
     --mark-a: #D45B78; --mark-b: #9A3451; --mark-glow: rgba(0, 0, 0, .55);
     --nav-bg: rgba(242, 235, 227, .95); --nav-fg: #1C1814; --nav-fg2: rgba(28, 24, 20, .72); --nav-line: rgba(0, 0, 0, .08); --nav-hover: rgba(0, 0, 0, .06);
     --endpaper: #594A38; --weft: rgba(30, 23, 18, .30); --warp: rgba(255, 255, 255, .10); --bk-ink: #CBB69B;
@@ -90,7 +92,7 @@
   --fg1: #E3DDD7; --fg2: #C7BFB8; --fg3: #A49D96; --fg4: #867F78;
   --rose: #CC5470; --rose-deep: #E8738C; --rose-soft: #452934;
   --veil: rgba(23, 22, 20, .65); --veil-color: rgba(23, 22, 20, .58); --veil-mono: rgba(23, 22, 20, .17); --mono-filter: grayscale(1) contrast(1.5); --glass: rgba(57, 54, 50, .55); --glass-line: rgba(255, 255, 255, .14);
-  --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
+  --days-fg: #E3DDD7; --days-fg2: #C7BFB8; --night: #141311; --night-fg: #E3DDD7; --night-fg2: #867F78; --shadow: 0, 0, 0;
   --mark-a: #D45B78; --mark-b: #9A3451; --mark-glow: rgba(0, 0, 0, .55);
   --nav-bg: rgba(242, 235, 227, .95); --nav-fg: #1C1814; --nav-fg2: rgba(28, 24, 20, .72); --nav-line: rgba(0, 0, 0, .08); --nav-hover: rgba(0, 0, 0, .06);
   --endpaper: #594A38; --weft: rgba(30, 23, 18, .30); --warp: rgba(255, 255, 255, .10); --bk-ink: #CBB69B;
@@ -374,10 +376,17 @@ ol, ul { padding: 0; list-style: none; }
 @keyframes drift { to { transform: translateX(calc(-50% - 11px)); } }
 .trio-points { margin-top: 20px; display: grid; gap: 22px; }
 @media (min-width: 820px) { .trio-points { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; } }
-.days .point p { color: var(--fg2); }
+.days .mark-name, .days h2, .days .point h3 { color: var(--days-fg); }
+.days .intro, .days .point p { color: var(--days-fg2); }
+.days .days-head, .days .trio-points, .days .flow-box { text-shadow: 0 1px 16px rgba(28, 24, 20, .32); }
+/* 쓰는 흐름 — 하루 카드 띠 맨 아래, 바탕 위 어두운 유리 한 장에 세 칸(남기고 · 정리하고 · 펼쳐보고) */
+.days .flow-box { margin-top: clamp(48px, 6vw, 72px); background: rgba(28, 24, 20, .18); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+.days .flow-box li { background: rgba(255, 251, 247, .06); }
+.days .flow-box svg { stroke: var(--days-fg); }
+.days .flow-box h3 { color: var(--days-fg); }
+.days .flow-box p { color: var(--days-fg2); }
 
 /* ── 쓰는 흐름 — 기능을 하나씩 펴기 전에, 앱과 지내는 결을 먼저(남기고 · 정리하고 · 펼쳐보고) */
-.flow { padding-block: clamp(72px, 9vw, 120px); }  /* 아래로 iPhone과 iPad 띠(alt)가 이어 선다 */
 .flow-box { display: grid; gap: 12px; padding: 12px; border-radius: 28px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
 @media (min-width: 760px) { .flow-box { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 20px; } }
 .flow-box li { display: grid; justify-items: center; gap: 6px; padding: 26px 20px 28px; border-radius: 20px; background: var(--bg-alt); text-align: center; }
@@ -750,20 +759,14 @@ footer .who { margin-left: auto; }
           <div class="point"><h3>그날의 한 문장</h3><p>무엇이든 됩니다. 문득 떠오른 생각도, 오래 남은 구절도, 그날의 나에게만 뜻이 있는 한 줄도.</p></div>
           <div class="point"><h3>손끝에 펼쳐지는 시간</h3><p>카드를 옆으로 밀면 어제가 옵니다. 그저께가 옵니다. 미는 만큼 하루씩 지나갑니다.</p></div>
         </div>
-      </div>
-    </section>
-  </div>
-
-  <section class="flow" aria-labelledby="flow-title">
-    <div class="wrap">
-      <h2 class="sr" id="flow-title">mo.Days를 쓰는 흐름</h2>
-      <ol class="flow-box">
+        <ol class="flow-box" aria-label="mo.Days를 쓰는 흐름">
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.2h2.6l1.6-2.4h6l1.6 2.4h2.6a1.9 1.9 0 0 1 1.9 1.9v8.6a1.9 1.9 0 0 1-1.9 1.9H4.8a1.9 1.9 0 0 1-1.9-1.9V9.1a1.9 1.9 0 0 1 1.9-1.9Z"/><circle cx="12" cy="13.2" r="3.5"/></svg><h3>순간 포착</h3><p>부담 없이 남기고</p></li>
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v3M12 3v3M16 3v3"/><path d="M18.6 10.4V6.4a1.9 1.9 0 0 0-1.9-1.9H7.3a1.9 1.9 0 0 0-1.9 1.9v13.2a1.9 1.9 0 0 0 1.9 1.9h3.9"/><path d="M8.6 10h6.8M8.6 13.4h4.4M8.6 16.8h2.2"/><path d="M20.3 13.7a1.55 1.55 0 0 0-2.2-2.2l-4.9 4.9-.7 2.9 2.9-.7Z"/></svg><h3>하루 완성</h3><p>여유 있을 때 정리하고</p></li>
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9.4v11"/><path d="M3.2 5.6h5a3.8 3.8 0 0 1 3.8 3.8 3.8 3.8 0 0 1 3.8-3.8h5v12.6h-5.6a3.2 3.2 0 0 0-3.2 2.2 3.2 3.2 0 0 0-3.2-2.2H3.2Z"/></svg><h3>인생 기록</h3><p>언제든 다시 펼쳐보고</p></li>
       </ol>
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
 
   <section class="feature alt pair" aria-labelledby="fp-title">
     <div class="wrap">
